@@ -3,7 +3,6 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 
 function ArticlePreview({
-  sf,
   readerAddress,
   articleOwner,
   articleBody,
@@ -14,7 +13,7 @@ function ArticlePreview({
       <div>{getPreview(articleBody)}</div>
       <Button
         variant="primary"
-        onClick={async () => await startFlow(sf, readerAddress, articleOwner)}
+        onClick={async () => await startFlow(readerAddress, articleOwner)}
       >
         Read The Rest
       </Button>{" "}

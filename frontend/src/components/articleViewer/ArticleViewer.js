@@ -5,29 +5,61 @@ import { Web3Provider } from "@ethersproject/providers";
 import { fDAIxAddress, onePerHour } from "../../constants/superfluid";
 import ArticlePreview from "./ArticlePreview";
 import FullArticle from "./FullArticle";
+import { Loading } from "../Loading";
 
 export function ArticleViewer({ article, readerAddress }) {
   const { articleTitle, articleBody, articleOwner } = article;
   const [sf, setSf] = useState();
-  const [isFlowing, setIsFlowing] = useState(false);
+  const [isArticlePaidFor, setIsArticlePaidFor] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     initSuperFluid().then((sf) => {
       setSf(sf);
-      checkIfFlowing(sf, readerAddress, articleOwner).then((result) => {
-        setIsFlowing(result);
+      checkIfArticlePaidFor(sf, readerAddress, articleOwner).then((result) => {
+        setIsArticlePaidFor(result);
       });
     });
-  }, []);
+  }, [isLoading]);
+
+  async function startFlow(senderAddress, receiverAddress) {
+    const sender = sf.user({
+      address: senderAddress,
+      token: fDAIxAddress,
+    });
+    setIsLoading(true);
+    await sender.flow({
+      recipient: receiverAddress,
+      flowRate: onePerHour.toString(),
+    });
+    setIsLoading(false);
+    console.log(await sender.details());
+  }
+
+  async function stopFlow(senderAddress, receiverAddress) {
+    const sender = sf.user({
+      address: senderAddress,
+      token: fDAIxAddress,
+    });
+    setIsLoading(true);
+    await sender.flow({
+      recipient: receiverAddress,
+      flowRate: "0",
+    });
+    setIsLoading(false);
+    console.log(await sender.details());
+  }
 
   return (
     <div className="container" style={{ textAlign: "center" }}>
       <div>
         {articleTitle} - By {articleOwner}
       </div>
-      {isFlowing ? (
+
+      {isLoading ? (
+        <Loading />
+      ) : isArticlePaidFor ? (
         <FullArticle
-          sf={sf}
           readerAddress={readerAddress}
           articleOwner={articleOwner}
           articleBody={articleBody}
@@ -35,7 +67,6 @@ export function ArticleViewer({ article, readerAddress }) {
         />
       ) : (
         <ArticlePreview
-          sf={sf}
           readerAddress={readerAddress}
           articleOwner={articleOwner}
           articleBody={articleBody}
@@ -56,33 +87,10 @@ async function initSuperFluid() {
   return sf;
 }
 
-async function startFlow(sf, senderAddress, receiverAddress) {
-  const sender = sf.user({
-    address: senderAddress,
-    token: fDAIxAddress,
-  });
-
-  await sender.flow({
-    recipient: receiverAddress,
-    flowRate: onePerHour.toString(),
-  });
-  console.log(await sender.details());
-}
-
-async function stopFlow(sf, senderAddress, receiverAddress) {
-  const sender = sf.user({
-    address: senderAddress,
-    token: fDAIxAddress,
-  });
-
-  await sender.flow({
-    recipient: receiverAddress,
-    flowRate: "0",
-  });
-  console.log(await sender.details());
-}
-
-async function checkIfFlowing(sf, readerAddress, articleOwner) {
+async function checkIfArticlePaidFor(sf, readerAddress, articleOwner) {
+  if (readerAddress.toLowerCase() === articleOwner.toLowerCase()) {
+    return true;
+  }
   const sender = sf.user({
     address: readerAddress,
     token: fDAIxAddress,
