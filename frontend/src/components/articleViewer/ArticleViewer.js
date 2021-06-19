@@ -10,14 +10,14 @@ import { Loading } from "../Loading";
 export function ArticleViewer({ article, readerAddress }) {
   const { articleTitle, articleBody, articleOwner } = article;
   const [sf, setSf] = useState();
-  const [isFlowing, setIsFlowing] = useState(false);
+  const [isArticlePaidFor, setIsArticlePaidFor] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     initSuperFluid().then((sf) => {
       setSf(sf);
-      checkIfFlowing(sf, readerAddress, articleOwner).then((result) => {
-        setIsFlowing(result);
+      checkIfArticlePaidFor(sf, readerAddress, articleOwner).then((result) => {
+        setIsArticlePaidFor(result);
       });
     });
   }, [isLoading]);
@@ -58,7 +58,7 @@ export function ArticleViewer({ article, readerAddress }) {
 
       {isLoading ? (
         <Loading />
-      ) : isFlowing ? (
+      ) : isArticlePaidFor ? (
         <FullArticle
           readerAddress={readerAddress}
           articleOwner={articleOwner}
@@ -87,7 +87,10 @@ async function initSuperFluid() {
   return sf;
 }
 
-async function checkIfFlowing(sf, readerAddress, articleOwner) {
+async function checkIfArticlePaidFor(sf, readerAddress, articleOwner) {
+  if (readerAddress.toLowerCase() === articleOwner.toLowerCase()) {
+    return true;
+  }
   const sender = sf.user({
     address: readerAddress,
     token: fDAIxAddress,
