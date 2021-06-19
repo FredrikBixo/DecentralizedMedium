@@ -6,5 +6,5 @@ export const oneHour = 60 * oneMinute;
 export const oneDay = 24 * oneHour;
 export const oneMonth = 30 * oneDay;
 
-export const onePerHour = 1e18 / oneHour;
-export const onePerMonth = 1e18 / oneMonth;
+export const onePerHour = Math.round(1e18 / oneHour);
+export const onePerMonth = Math.round(1e18 / oneMonth);

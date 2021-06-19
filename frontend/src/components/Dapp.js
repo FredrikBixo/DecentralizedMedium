@@ -87,19 +87,23 @@ export class Dapp extends React.Component {
 
     // If the token data or the user's balance hasn't loaded yet, we show
     // a loading component.
-    if (!this.state.tokenData || !this.state.balance) {
+    /*if (!this.state.tokenData || !this.state.balance) {
       return <Loading />;
-    }
+    }*/
 
     // If everything is loaded, we render the application.
     const article = {
       articleTitle: "Test Article",
       articleBody: testArticleBody,
-      articleOwner: "OwnerAddress",
+      articleOwner: "0x10941a1658e033657a6f19CdAA2c4AD8552De9b6",
     };
+    console.log(this.state.selectedAddress);
     return (
       <div>
-        <ArticleViewer article={article} readerAddress={"ReaderAddress"} />
+        <ArticleViewer
+          article={article}
+          readerAddress={this.state.selectedAddress}
+        />
       </div>
     );
   }
@@ -121,9 +125,9 @@ export class Dapp extends React.Component {
     // Once we have the address, we can initialize the application.
 
     // First we check the network
-    if (!this._checkNetwork()) {
+    /*if (!this._checkNetwork()) {
       return;
-    }
+    }*/
 
     this._initialize(selectedAddress);
 
@@ -161,9 +165,9 @@ export class Dapp extends React.Component {
 
     // Fetching the token data and the user's balance are specific to this
     // sample project, but you can reuse the same initialization pattern.
-    this._intializeEthers();
-    this._getTokenData();
-    this._startPollingData();
+    //this._intializeEthers();
+    //this._getTokenData();
+    //this._startPollingData();
   }
 
   async _intializeEthers() {
