@@ -31,5 +31,9 @@
     "ethers": "^5.0.0",
     "hardhat": "^2.0.4",
     "husky": "^4.2.5"
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "react-bootstrap": "^1.6.1"
   }
 }
