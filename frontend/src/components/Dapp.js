@@ -19,7 +19,7 @@ import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
-import ArticleViewer from "./articleViewer/ArticleViewer";
+import Home from '../containers/home';
 import { testArticleBody } from "../constants/constants";
 
 // This is the Hardhat Network id, you might change it in the hardhat.config.js
@@ -100,10 +100,7 @@ export class Dapp extends React.Component {
     console.log(this.state.selectedAddress);
     return (
       <div>
-        <ArticleViewer
-          article={article}
-          readerAddress={this.state.selectedAddress}
-        />
+        <Home selectedAddress={this.state.selectedAddress} />
       </div>
     );
   }

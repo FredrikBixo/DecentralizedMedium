@@ -4,3 +4,9 @@ node_modules
 #Hardhat files
 cache
 artifacts
+
+#Ignore yarn.lock files
+*.lock
+
+# Ignore VSCode files
+.vscode/basic_snippets.code-snippets

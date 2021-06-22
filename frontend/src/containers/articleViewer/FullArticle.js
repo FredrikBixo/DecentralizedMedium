@@ -2,13 +2,13 @@ import React from "react";
 
 import Button from "react-bootstrap/Button";
 
-function FullArticle({ readerAddress, articleOwner, articleBody, stopFlow }) {
+function FullArticle({ articleOwner, articleBody, stopFlow }) {
   return (
     <div>
       <div>{articleBody}</div>
       <Button
         variant="primary"
-        onClick={async () => await stopFlow(readerAddress, articleOwner)}
+        onClick={async () => await stopFlow(articleOwner)}
       >
         Finish Reading
       </Button>{" "}
