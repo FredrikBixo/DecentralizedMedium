@@ -1,53 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import SuperfluidSDK from "@superfluid-finance/js-sdk";
 import { Web3Provider } from "@ethersproject/providers";
 import { fDAIxAddress, onePerHour } from "../../constants/superfluid";
 import ArticlePreview from "./ArticlePreview";
 import FullArticle from "./FullArticle";
-import { Loading } from "../Loading";
+import { Loading } from "../../components/Loading";
+import { AppContext } from '../../contexts/AppContext';
 
-export function ArticleViewer({ article, readerAddress }) {
+export function ArticleViewer({ article }) {
+  const appContext = useContext(AppContext);
   const { articleTitle, articleBody, articleOwner } = article;
-  const [sf, setSf] = useState();
   const [isArticlePaidFor, setIsArticlePaidFor] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { sf, user, userAddress: readerAddress } = appContext;
 
   useEffect(() => {
-    initSuperFluid().then((sf) => {
-      setSf(sf);
-      checkIfArticlePaidFor(sf, readerAddress, articleOwner).then((result) => {
-        setIsArticlePaidFor(result);
-      });
+    if (!sf) return;
+    checkIfArticlePaidFor(sf, readerAddress, articleOwner).then((result) => {
+      setIsArticlePaidFor(result);
     });
   }, [isLoading]);
 
-  async function startFlow(senderAddress, receiverAddress) {
-    const sender = sf.user({
-      address: senderAddress,
-      token: fDAIxAddress,
-    });
+  async function startFlow(receiverAddress) {
     setIsLoading(true);
-    await sender.flow({
+    await user.flow({
       recipient: receiverAddress,
       flowRate: onePerHour.toString(),
     });
     setIsLoading(false);
-    console.log(await sender.details());
+    console.log(await user.details());
   }
 
-  async function stopFlow(senderAddress, receiverAddress) {
-    const sender = sf.user({
-      address: senderAddress,
-      token: fDAIxAddress,
-    });
+  async function stopFlow(receiverAddress) {
     setIsLoading(true);
-    await sender.flow({
+    await user.flow({
       recipient: receiverAddress,
       flowRate: "0",
     });
     setIsLoading(false);
-    console.log(await sender.details());
+    console.log(await user.details());
   }
 
   return (
@@ -60,14 +52,12 @@ export function ArticleViewer({ article, readerAddress }) {
         <Loading />
       ) : isArticlePaidFor ? (
         <FullArticle
-          readerAddress={readerAddress}
           articleOwner={articleOwner}
           articleBody={articleBody}
           stopFlow={stopFlow}
         />
       ) : (
         <ArticlePreview
-          readerAddress={readerAddress}
           articleOwner={articleOwner}
           articleBody={articleBody}
           startFlow={startFlow}
