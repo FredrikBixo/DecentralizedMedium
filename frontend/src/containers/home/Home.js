@@ -9,6 +9,7 @@ import { articleList } from "../../constants/article-list";
 import { fDAIxAddress } from "../../constants/superfluid";
 import { AppContext } from "../../contexts/AppContext";
 import { Loading } from "../../components/Loading";
+import { PublishMain } from "../../components/PublishMain";
 
 function Home({ selectedAddress }) {
   const [sf, setSf] = useState();
@@ -49,7 +50,15 @@ function Home({ selectedAddress }) {
       <Router>
         <Switch>
           <Route exact path="/" component={LandingScreen} />
-          <Route path="/article/:id" component={articleViewer} />
+          <Route path="/article/:id">
+            <ArticleViewer
+              article={articleList[0]}
+              readerAddress={selectedAddress}
+            />
+          </Route>
+          <Route path="/publish">
+            <PublishMain />
+          </Route>
         </Switch>
       </Router>
     </AppContext.Provider>
