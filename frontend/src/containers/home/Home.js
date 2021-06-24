@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
 
 import ArticleViewer from "../articleViewer/ArticleViewer";
 import { initSuperFluid } from "../../utils/superfluid";
@@ -35,14 +41,19 @@ function Home({ selectedAddress }) {
   }
 
   return (
-    <div>
+    <Router>
       <AppContext.Provider value={{ sf, user, userAddress: selectedAddress }}>
-        <ArticleViewer
-          article={articleList[0]}
-          readerAddress={selectedAddress}
-        />
+        <Switch>
+          {/* Add the route to the editor page here */}
+          <Route path="/article/:id">
+            <ArticleViewer
+              article={articleList[0]}
+              readerAddress={selectedAddress}
+            />
+          </Route>
+        </Switch>
       </AppContext.Provider>
-    </div>
+    </Router>
   );
 }
 
