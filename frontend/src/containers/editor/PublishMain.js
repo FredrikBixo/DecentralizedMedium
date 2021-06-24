@@ -1,5 +1,6 @@
+import React from "react";
 import { Typography, Container, Box } from '@material-ui/core';
-import Editor from '../containers/editor/Editor';
+import Editor from './Editor';
 
 
 export default function PublishMain() {
@@ -26,5 +27,3 @@ export default function PublishMain() {
     </React.Fragment>
   );
 }
-
-export default Editor;
