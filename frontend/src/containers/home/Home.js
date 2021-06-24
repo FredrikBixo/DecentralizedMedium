@@ -9,7 +9,7 @@ import { articleList } from "../../constants/article-list";
 import { fDAIxAddress } from "../../constants/superfluid";
 import { AppContext } from "../../contexts/AppContext";
 import { Loading } from "../../components/Loading";
-import { PublishMain } from "../../components/PublishMain";
+import PublishMain from "../editor/PublishMain";
 
 function Home({ selectedAddress }) {
   const [sf, setSf] = useState();
