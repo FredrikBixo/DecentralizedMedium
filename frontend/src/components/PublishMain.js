@@ -1,8 +1,8 @@
 import { Typography, Container, Box } from '@material-ui/core';
-import Editor from './Editor';
+import Editor from '../containers/editor/Editor';
 
 
-export default function App() {
+export default function PublishMain() {
   return (
     <React.Fragment>
       <Container
