@@ -1,0 +1,30 @@
+import { Typography, Container, Box } from '@material-ui/core';
+import Editor from './Editor';
+
+
+export default function App() {
+  return (
+    <React.Fragment>
+      <Container
+        style={{ backgroundColor: '#ffffff', minHeight: "100vh" }}
+        maxWidth="xl">
+        <Box p={5}>
+          <Box>
+            <Typography variant="h3" component="span">
+              The Reader - Editor
+        </Typography>
+          </Box>
+          <Box
+            mt={2}
+            style={{
+              backgroundColor: '#ffffff',
+            }}>
+            <Editor />
+          </Box>
+        </Box>
+      </Container>
+    </React.Fragment>
+  );
+}
+
+export default Editor;
