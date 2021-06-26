@@ -33,6 +33,7 @@
     "husky": "^4.2.5"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.1.0",
     "bootstrap": "^4.6.0",
     "react-bootstrap": "^1.6.1"
   }
