@@ -22,8 +22,11 @@ export default function PublishMain() {
             }}>
             <Editor />
           </Box>
+          <button id="btnSaves">Save</button>
         </Box>
       </Container>
     </React.Fragment>
   );
 }
+
+export default PublishMain;
