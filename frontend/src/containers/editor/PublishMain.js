@@ -28,5 +28,3 @@ export default function PublishMain() {
     </React.Fragment>
   );
 }
-
-export default PublishMain;
