@@ -68,7 +68,7 @@ const Editor = (props) => {
 
   const initEditor = () => {
     const editor = new EditorJS({
-      holder: 'editorjs',
+      holder: 'EDITTOR_HOLDER_ID',
       logLevel: "ERROR",
       data: editorData,
       onReady: () => {
@@ -120,9 +120,16 @@ const Editor = (props) => {
  
   return (
     <React.Fragment>
-      <div id={'editorjs'}> </div>
+      <div id={'EDITTOR_HOLDER_ID'} />
     </React.Fragment>
   );
 }
- 
+
+let btnSaves = document.getElementById("btnSaves");
+btnSaves.addEventListener("click", () => {
+  editor.save().then(outputData => {
+    console.log(outputData);
+  });
+});
+
 export default Editor;
