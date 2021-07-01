@@ -128,7 +128,7 @@ const Editor = (props) => {
 let btnSaves = document.getElementById("btnSaves");
 
 btnSaves.addEventListener("click", () => {
-  editor.save().then(outputData => {
+  Editor.save().then(outputData => {
     console.log(outputData);
   });
 });
