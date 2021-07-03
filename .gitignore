@@ -10,3 +10,5 @@ artifacts
 
 # Ignore VSCode files
 .vscode/basic_snippets.code-snippets
+
+*.DS_Store

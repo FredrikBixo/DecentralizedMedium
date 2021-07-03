@@ -1,14 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
-import SuperfluidSDK from "@superfluid-finance/js-sdk";
-import { Web3Provider } from "@ethersproject/providers";
 import { fDAIxAddress, onePerHour } from "../../constants/superfluid";
+import { articleList } from "../../constants/article-list";
 import ArticlePreview from "./ArticlePreview";
 import FullArticle from "./FullArticle";
 import { Loading } from "../../components/Loading";
-import { AppContext } from '../../contexts/AppContext';
+import { AppContext } from "../../contexts/AppContext";
 
-export function ArticleViewer({ article }) {
+export function ArticleViewer() {
+  const params = useParams();
+  const history = useHistory();
+  const { id: index } = params;
+  const article = articleList[index];
   const appContext = useContext(AppContext);
   const { articleTitle, articleBody, articleOwner } = article;
   const [isArticlePaidFor, setIsArticlePaidFor] = useState(false);
@@ -17,17 +21,23 @@ export function ArticleViewer({ article }) {
 
   useEffect(() => {
     if (!sf) return;
-    checkIfArticlePaidFor(sf, readerAddress, articleOwner).then((result) => {
-      setIsArticlePaidFor(result);
-    });
-  }, [isLoading]);
+    startFlow(articleOwner);
+  }, []);
 
   async function startFlow(receiverAddress) {
     setIsLoading(true);
-    await user.flow({
-      recipient: receiverAddress,
-      flowRate: onePerHour.toString(),
-    });
+    const isArticlePaidFor = await checkIfArticlePaidFor(
+      sf,
+      readerAddress,
+      articleOwner
+    );
+    if (!isArticlePaidFor) {
+      await user.flow({
+        recipient: receiverAddress,
+        flowRate: onePerHour.toString(),
+      });
+    }
+    setIsArticlePaidFor(true);
     setIsLoading(false);
     console.log(await user.details());
   }
@@ -38,6 +48,8 @@ export function ArticleViewer({ article }) {
       recipient: receiverAddress,
       flowRate: "0",
     });
+    // Navigate to home page
+    history.push("/");
     setIsLoading(false);
     console.log(await user.details());
   }
@@ -65,16 +77,6 @@ export function ArticleViewer({ article }) {
       )}
     </div>
   );
-}
-
-// This can probably be moved up in the component structure once more components
-// need superfluid.
-async function initSuperFluid() {
-  const sf = new SuperfluidSDK.Framework({
-    ethers: new Web3Provider(window.ethereum),
-  });
-  await sf.initialize();
-  return sf;
 }
 
 async function checkIfArticlePaidFor(sf, readerAddress, articleOwner) {

@@ -13,11 +13,6 @@ import contractAddress from "../contracts/contract-address.json";
 // logic. They just render HTML.
 import { NoWalletDetected } from "./NoWalletDetected";
 import { ConnectWallet } from "./ConnectWallet";
-import { Loading } from "./Loading";
-import { Transfer } from "./Transfer";
-import { TransactionErrorMessage } from "./TransactionErrorMessage";
-import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
-import { NoTokensMessage } from "./NoTokensMessage";
 
 import Home from '../containers/home';
 import { testArticleBody } from "../constants/constants";
@@ -97,11 +92,8 @@ export class Dapp extends React.Component {
       articleBody: testArticleBody,
       articleOwner: "0x10941a1658e033657a6f19CdAA2c4AD8552De9b6",
     };
-    console.log(this.state.selectedAddress);
     return (
-      <div>
         <Home selectedAddress={this.state.selectedAddress} />
-      </div>
     );
   }
 
