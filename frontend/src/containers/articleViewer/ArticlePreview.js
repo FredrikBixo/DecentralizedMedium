@@ -1,6 +1,7 @@
 import React from "react";
 
 import Button from "react-bootstrap/Button";
+import { getPreview } from '../../utils/common-utils';
 
 function ArticlePreview({
   articleOwner,
@@ -17,21 +18,6 @@ function ArticlePreview({
         Read The Rest
       </Button>{" "}
     </div>
-  );
-}
-
-/**
- * Returns the preview of an article.
- *
- * @param articleBody The body of the given article
- *
- * @return The preview, 10% of the article body followed by '...'
- */
-function getPreview(articleBody) {
-  const previewPercent = 0.1;
-  return (
-    articleBody.substring(0, Math.round(articleBody.length * previewPercent)) +
-    "..."
   );
 }
 

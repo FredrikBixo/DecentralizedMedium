@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-
-import ArticleViewer from "../articleViewer/ArticleViewer";
+import ArticleViewer from "../articleViewer";
+import LandingScreen from "../landingScreen";
 import { initSuperFluid } from "../../utils/superfluid";
 import { articleList } from "../../constants/article-list";
 import { fDAIxAddress } from "../../constants/superfluid";
@@ -24,26 +20,34 @@ function Home({ selectedAddress }) {
     // If not address is selected, do not initialize sf
     if (!selectedAddress) return () => {};
     setLoader(true);
-    initSuperFluid().then((sf) => {
-      // Set the superfluid instance
-      setSf(sf);
+    initSuperFluid()
+      .then((sf) => {
+        // Set the superfluid instance
+        setSf(sf);
 
-      // Create the user instance
-      const user = sf.user({ address: selectedAddress, token: fDAIxAddress });
-      // Set the user instance
-      setUser(user);
-    }).finally(() => {
-      setLoader(false);
-    });
+        // Create the user instance
+        const user = sf.user({ address: selectedAddress, token: fDAIxAddress });
+        // Set the user instance
+        setUser(user);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
+  }, [selectedAddress]);
+
+  const articleViewer = useCallback(() => {
+    return (
+      <ArticleViewer article={articleList[0]} readerAddress={selectedAddress} />
+    );
   }, [selectedAddress]);
 
   if (loader) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
-    <Router>
-      <AppContext.Provider value={{ sf, user, userAddress: selectedAddress }}>
+    <AppContext.Provider value={{ sf, user, userAddress: selectedAddress }}>
+      <Router>
         <Switch>
           <Route path="/article/:id">
             <ArticleViewer
