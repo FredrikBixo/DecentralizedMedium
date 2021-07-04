@@ -9,6 +9,7 @@ import { articleList } from "../../constants/article-list";
 import { fDAIxAddress } from "../../constants/superfluid";
 import { AppContext } from "../../contexts/AppContext";
 import { Loading } from "../../components/Loading";
+import NavBar from "../../components/NavBar";
 import PublishMain from "../editor/PublishMain";
 
 function Home({ selectedAddress }) {
@@ -48,19 +49,16 @@ function Home({ selectedAddress }) {
   return (
     <AppContext.Provider value={{ sf, user, userAddress: selectedAddress }}>
       <Router>
+        <NavBar />
         <Switch>
-          <Route path="/article/:id">
-            <ArticleViewer
-              article={articleList[0]}
-              readerAddress={selectedAddress}
-            />
-          </Route>
+          <Route exact path="/" component={LandingScreen} />
+          <Route path="/article/:id" component={articleViewer} />
           <Route path="/publish">
             <PublishMain />
           </Route>
-        </Switch>git
-      </AppContext.Provider>
-    </Router>
+        </Switch>
+      </Router>
+    </AppContext.Provider>
   );
 }
 
