@@ -8,6 +8,10 @@ artifacts
 #Ignore yarn.lock files
 *.lock
 
+#Ignore package.lock files
+package-lock.json
+*/package-lock.json
+
 # Ignore VSCode files
 .vscode/basic_snippets.code-snippets
 
