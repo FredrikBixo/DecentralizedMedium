@@ -9,6 +9,7 @@ import { articleList } from "../../constants/article-list";
 import { fDAIxAddress } from "../../constants/superfluid";
 import { AppContext } from "../../contexts/AppContext";
 import { Loading } from "../../components/Loading";
+import NavBar from '../../components/NavBar';
 import PublishMain from "../editor/PublishMain";
 
 function Home({ selectedAddress }) {
@@ -48,6 +49,7 @@ function Home({ selectedAddress }) {
   return (
     <AppContext.Provider value={{ sf, user, userAddress: selectedAddress }}>
       <Router>
+        <NavBar />
         <Switch>
           <Route exact path="/" component={LandingScreen} />
           <Route path="/article/:id">

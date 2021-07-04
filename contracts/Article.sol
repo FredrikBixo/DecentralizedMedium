@@ -17,7 +17,7 @@ contract Article is ERC721 {
 
   mapping (uint256 => string) private _tokenURIs;
 
-  constructor() public ERC721("Article", "A") {
+  constructor() ERC721("Article", "A") {
       baseURI = "https://ipfs.io/ipfs/";
   }
 
